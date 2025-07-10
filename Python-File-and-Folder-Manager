@@ -1,0 +1,163 @@
+from pathlib import Path
+import os
+
+# This script provides basic file handling operations: create, read, update, and delete files.
+
+# Function to read and list files and folders in the current directory
+def readfileandfolder():
+    path=Path("")
+    items=list(path.rglob("*"))
+    for i,items in enumerate(items):
+        print(f"{i+1}. {items}")
+
+# Function to create a folder
+def create_folder():
+    try:
+        readfileandfolder()
+        foldername = input("Enter the name of the folder to create: ")
+        p = Path(foldername)
+        if not p.exists():
+            p.mkdir()
+            print(f"Folder '{foldername}' created successfully.")
+        else:
+            print(f"Folder '{foldername}' already exists.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Function to delete a folder
+def delete_folder():
+    try:
+        readfileandfolder()
+        folder_name= input("Enter the name of the folder to delete: ")
+        p=Path(folder_name)
+        if p.exists() and p.is_dir():
+            try:
+                p.rmdir()  # This will only remove empty directories
+                print(f"Folder '{folder_name}' deleted successfully.")
+            except Exception as e:
+                print ("an error occured while deleting the folder, it may not be empty")
+        else:
+            print(f"folder : {folder_name} does not exists or is not a folder.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Function to create a file
+def create_file():
+     
+    try:
+        readfileandfolder()
+        filename = input("Enter the name of the file to create: ")
+        p=Path(filename)
+
+        if not p.exists():
+            with open(filename,"w") as file:
+                content = input("Enter the content of the file: ")
+                file.write(content)
+        else:
+            print(f"File {filename} already exists.")
+
+        print(f"FILE CREATED SUCESSFULLY :- {filename}")
+    except Exception as e:
+            print(f"An error occurred: {e}")
+
+# Function to read a file
+def readfile():
+    try:
+        readfileandfolder()
+        filename = input("Enter the name of the file to read: ")
+        p=Path(filename)
+        if p.exists() and p.is_file():
+            with open(filename,"r") as file:
+                content=file.read()
+                print(f"Content of {filename}:\n{content}") 
+        else:
+            print(f"File {filename} does not exist or is not a file.")
+    except Exception as e:
+        print(f"an error occured: {e}")
+
+# Function to update a file
+def update_file():
+    try:
+        readfileandfolder()
+        filename= input("which file you want to update:")
+        p=Path(filename)
+        if p.exists() and p.is_file():
+            print("press 1 for changing the name of your file:-")
+            print("press 2 for overwriting the content of your file:-")
+            print("press 3 for appending the content of your file:-")
+
+            input= int(input("Enter your choice: "))
+            
+            if input == 1:
+                new_name= input("Enter the new name for the file: ")
+                p2=Path(new_name)
+                p.rename(p2)
+                print(f"File renamed to {new_name} successfully.")
+            
+            elif input == 2:
+                with open(p,"w") as file:
+                    content=input("Enter the new content to overwrite the file: ")
+                    file.write(content)
+                    print(f"File {p} has been overwritten successfully.")
+            
+            elif input == 3:
+                with open(p,"a") as file:
+                    content=input("Enter the content to append to the file: ")
+                    file.write(content)
+                    print(f"Content appended to {p} successfully.")
+
+        else:
+            print(f"File {filename} does not exist or is not a file.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Function to delete a file
+def delete_file():
+    try:
+        readfileandfolder()
+        filename=input("enter the file name you want to delete :")
+        p=Path(filename)
+        if p.exists() and p.is_file():
+            os.remove(p)
+            print(f"File {p} has been deleted successfully.")
+        else:
+            print(f"File {p} does not exist or is not a file.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Main program starts here
+while True:
+    print("press 1 to creating a file")
+    print("press 2 to reading a file")
+    print("press 3 to updating a file")
+    print("press 4 to deletion a file")
+    print("press 5 to create a folder")
+    print("press 6 to delete a folder")
+    print("press 7 to exit")
+
+
+    input_value = int(input("Enter your choice: "))
+
+    if input_value == 1:
+        create_file()
+
+    elif input_value == 2:
+        readfile()
+
+    elif input_value == 3:
+        update_file()       
+
+    elif input_value == 4:
+        delete_file()
+        
+    elif input_value == 5:
+        create_folder()
+
+    elif input_value == 6:
+        delete_folder()
+
+    elif input_value==7:
+        print("Exiting the program.")
+        break
+    else:
+        print("Invalid choice. Please try again.")
